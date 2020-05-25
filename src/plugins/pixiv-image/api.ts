@@ -48,8 +48,8 @@ async function fetchSearch(word: string, page: number = 1) {
 }
 
 function parseResult(results: ApiResponse[]) {
-    const safeAgeLimited = results.filter(item => item.age_limit !== 'r18');
-    return safeAgeLimited.map(result => ({
+    return results.map(result => ({
+        age_limit: result.age_limit,
         title: result.title,
         url: proxyPixivUrl(result.image_urls.px_480mw),
         username: result.user.name,

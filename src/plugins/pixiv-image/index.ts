@@ -5,7 +5,7 @@ async function pixivSearch(ctx: Context) {
     const command = ctx.command('!s <content> [page]', '搜索插画')
         .alias('search')
         .option('-u [count]', '[count]users入り')
-        .option('-r', '开启r18')
+        .option('-r', '取消r18限制')
         .action(({ meta, options }, content, page) => searchImage(meta, options, content, page));
 
     // command.subcommand('search [content] [page]')

@@ -5,9 +5,9 @@ dotenv.config();
 
 export = {
   type: "http",
-  port: 8080,
-  server: "http://localhost:5700",
-  selfId: 2390355351,
+  port: process.env.BOT_PORT,
+  server: process.env.CQHTTP_SERVER_URL,
+  selfId: process.env.QQ_ACCOUNT,
   secret: process.env.COOLQ_SECRET,
   token: process.env.COOLQ_TOKEN,
   plugins: [

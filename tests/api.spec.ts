@@ -1,4 +1,4 @@
-import { fetchRanking } from '../src/plugins/pixiv-image/api'
+import { fetchRanking } from '../src/plugins/api'
 
 describe('api', () => {
     test('fetch rank', async () => {

@@ -30,7 +30,7 @@ interface ApiData {
 
 const baseUrl = 'https://api.imjad.cn/pixiv/v1';
 
-async function fetchRanking(mode: string = 'weekly', page: number = 1, content: string = 'illust') {
+async function fetchRanking(page: number = 1, mode: string = 'weekly', content: string = 'illust') {
     const query = querystring.stringify({
         type: 'rank',
         mode,

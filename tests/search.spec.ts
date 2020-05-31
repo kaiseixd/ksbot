@@ -1,12 +1,12 @@
 import { MockedApp } from 'koishi-test-utils'
-import pixivImage from '../src/plugins/pixiv-image' 
+import pixivSearch from '../src/plugins/pixiv-search' 
 
 const app = new MockedApp()
 
-app.plugin(pixivImage)
+app.plugin(pixivSearch)
 
-describe('pixiv image', () => {
-    test('search command', async () => {
+describe('pixiv search', () => {
+    test('normal search', async () => {
         await app.receiveMessage('user', '!s lize', 123)
 
         app.shouldHaveLastRequest('send_private_msg', {

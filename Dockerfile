@@ -17,4 +17,4 @@ RUN npm install koishi -g
 COPY . .
 
 EXPOSE 8080
-CMD npm start
+CMD npm deploy

@@ -1,0 +1,29 @@
+version: "3"
+services:
+  cqhttp:
+    image: richardchien/cqhttp:latest
+    env_file: .env
+    restart: on-failure
+    ports:
+      - "9000:9000"
+      - "5700:5700"
+    environment:
+      - VNC_PASSWD=${VNC_PWD}
+      - COOLQ_ACCOUNT=${QQ_ACCOUNT}
+      - COOLQ_URL=${COOLQ_VERSION_URL}
+      - CQHTTP_USE_HTTP=true
+      - CQHTTP_USE_WS=true
+      - CQHTTP_SERVE_DATA_FILES=true
+      - FORCE_ENV=true
+      - CQHTTP_POST_URL=${CQHTTP_POST_DEV_URL}
+      - CQHTTP_SECRET=${COOLQ_SECRET}
+      - CQHTTP_ACCESS_TOKEN=${COOLQ_TOKEN}
+    volumes:
+      - ./cqhttp:/home/user/coolq
+    networks:
+      - bot_net
+
+networks:
+  bot_net:
+    driver: bridge
+  

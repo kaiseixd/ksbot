@@ -1,6 +1,7 @@
 import { Context, Meta, CommandOption } from 'koishi-core';
 import { CQCode } from 'koishi-utils';
-import { fetchSearch } from './api';
+import { fetchSearch } from '../api';
+import { r18Limit } from '../utils';
 
 async function searchImage(meta: Meta, options: Record<string, any>, content?: string, page?: string) {
     const output = [];
@@ -12,8 +13,7 @@ async function searchImage(meta: Meta, options: Record<string, any>, content?: s
         searchText += ` ${count}users入り`;
     }
     const results = await fetchSearch(searchText, +page);
-
-    const safeAgeLimited = options.r ? results : results.filter(item => item.age_limit !== 'r18');
+    const safeAgeLimited = r18Limit(results, !options.r);
 
     safeAgeLimited.forEach(({ url, title, username }) => {
         output.push(CQCode.stringify('image', { file: url }));

@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "koishi start -- -r ts-node/register",
+    "dev": "cross-env NODE_ENV=development koishi start -- -r ts-node/register",
+    "deploy": "cross-env NODE_ENV=production koishi start -- -r ts-node/register",
     "test": "jest tests/.*\\.spec\\.ts --runInBand",
-    "api": "jest tests/api.spec.ts",
     "build": "tsc"
   },
   "keywords": [],
@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/jest": "^25.2.3",
     "@types/node": "^14.0.6",
+    "cross-env": "^7.0.2",
     "jest": "^26.0.1",
     "koishi-test-utils": "^3.3.0",
     "ts-jest": "^26.1.0",

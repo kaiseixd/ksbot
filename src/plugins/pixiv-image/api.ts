@@ -1,7 +1,12 @@
 import querystring from 'querystring';
 import axios from 'axios';
 
-interface ApiResponse {
+export interface RankingResponse {
+    previous_rank: number;
+    rank: number;
+    work: ApiResponse;
+};
+export interface ApiResponse {
     age_limit: string;
     tags: string[];
     title: string;
@@ -12,19 +17,20 @@ interface ApiResponse {
     user: {
         name: string;
     };
-}
-
+};
+type UnPromisify<T> = T extends Promise<infer U> ? U : T;
+export type ApiResult = UnPromisify<ReturnType<typeof fetchRanking>>;
 interface ApiData {
     data: {
         count: number;
         response: ApiResponse[];
         status: string;
     }
-}
+};
 
 const baseUrl = 'https://api.imjad.cn/pixiv/v1';
 
-async function fetchRank(mode: string = 'weekly', page: number = 1, content: string = 'illust') {
+async function fetchRanking(mode: string = 'weekly', page: number = 1, content: string = 'illust') {
     const query = querystring.stringify({
         type: 'rank',
         mode,
@@ -33,7 +39,7 @@ async function fetchRank(mode: string = 'weekly', page: number = 1, content: str
         per_page: 10
     });
     const res = await axios.get(`${baseUrl}?${query}`);
-    return res
+    return parseRankingResult(res.data.response[0].works);
 }
 
 async function fetchSearch(word: string, page: number = 1) {
@@ -44,10 +50,19 @@ async function fetchSearch(word: string, page: number = 1) {
         per_page: 10
     });
     const res: ApiData = await axios.get(`${baseUrl}?${query}`);
-    return parseResult(res.data.response);
+    return parseSearchResult(res.data.response);
 }
 
-function parseResult(results: ApiResponse[]) {
+function parseRankingResult(results: RankingResponse[]) {
+    return results.map(result => ({
+        age_limit: result.work.age_limit,
+        title: result.work.title,
+        url: proxyPixivUrl(result.work.image_urls.px_480mw),
+        username: result.work.user.name,
+    }));
+}
+
+function parseSearchResult(results: ApiResponse[]) {
     return results.map(result => ({
         age_limit: result.age_limit,
         title: result.title,
@@ -60,4 +75,4 @@ function proxyPixivUrl(url: string) {
     return url.replace(/pximg\.net/, 'pixiv.cat');
 }
 
-export { fetchRank, fetchSearch };
+export { fetchRanking, fetchSearch };
